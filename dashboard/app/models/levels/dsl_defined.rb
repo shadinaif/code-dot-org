@@ -16,11 +16,13 @@
 #  published             :boolean          default(FALSE), not null
 #  notes                 :text(65535)
 #  audit_log             :text(65535)
+#  parent_level_id       :integer
 #
 # Indexes
 #
-#  index_levels_on_game_id  (game_id)
-#  index_levels_on_name     (name)
+#  index_levels_on_game_id          (game_id)
+#  index_levels_on_name             (name)
+#  index_levels_on_parent_level_id  (parent_level_id)
 #
 
 require 'cdo/script_constants'
