@@ -2,6 +2,7 @@ require 'i18n'
 require 'active_support/core_ext/numeric/bytes'
 require 'cdo/key_value'
 require 'cdo/honeybadger'
+require 'cdo/i18n_string_url_tracker' #DAYNE is this right?
 
 module Cdo
   module I18n
@@ -140,16 +141,26 @@ module Cdo
       end
     end
 
+    module I18nStringUrlTrackerPlugin
+      def translate(locale, key, options = ::I18n::EMPTY_HASH)
+        result = super(locale, key, options)
+        I18nStringUrlTracker.log_association(key, "http://todo.com") if key
+        result
+      end
+    end
+
     class SimpleBackend < ::I18n::Backend::Simple
       include SmartTranslate
       include MarkdownTranslate
       include SafeInterpolation
+      include I18nStringUrlTrackerPlugin
     end
 
     # I18n backend instance used by the web application.
     class KeyValueCacheBackend < ::I18n::Backend::KeyValue
       include ::I18n::Backend::CacheFile
       include SmartTranslate
+      include I18nStringUrlTrackerPlugin
 
       CACHE_DIR = pegasus_dir('cache', 'i18n/cache')
 
