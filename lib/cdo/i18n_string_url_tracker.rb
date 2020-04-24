@@ -1,4 +1,6 @@
 require 'concurrent'
+require 'cdo/firehose'
+
 class I18nStringUrlTracker
   @@buffer = Concurrent::Set[]
   @@update_thread = nil
@@ -17,7 +19,7 @@ class I18nStringUrlTracker
 
   def self.upload_data
     # upload the data to Firehose.
-    CDO.log.info "@@buffer=#{@@buffer}"
+    FirehoseClient.instance.put_record_batch(@@buffer)
     @@buffer.clear
   end
 

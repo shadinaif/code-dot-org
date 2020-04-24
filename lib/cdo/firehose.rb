@@ -34,35 +34,50 @@ class FirehoseClient
     @firehose = Aws::Firehose::Client.new(region: REGION)
   end
 
-  # Posts a record to the analytics stream.
-  # @param data [hash] The data to insert into the stream.
-  def put_record(data)
+  def put_record_batch(datas)
     return unless Gatekeeper.allows('firehose', default: true)
+    return if datas.nil_or_empty?
 
-    data_with_common_values = add_common_values(data)
+    datas_with_common_values = []
+    datas.each do |data|
+      datas_with_common_values << {data: add_common_values(data)}
+    end
 
     if [:development, :test].include? rack_env
       CDO.log.info "Skipped sending record to #{STREAM_NAME}: "
-      CDO.log.info data
+      CDO.log.info datas
       return
     end
 
-    # TODO(asher): Determine whether these should be cached and batched via
-    # put_record_batch. See
-    #   http://docs.aws.amazon.com/sdkforruby/api/Aws/Firehose/Client.html#put_record_batch-instance_method
-    # for documentation.
-    @firehose.put_record(
-      {
-        delivery_stream_name: STREAM_NAME,
-        record: {data: data_with_common_values.to_json}
-      }
-    )
+    # AWS Firehose documents that put_record_batch can only handle 500
+    # records at a time so we will break up the data into 500 chunks and send
+    # it.
+    firehose_max_records_batch = 500
+    i = 0
+    while i < datas_with_common_values.size
+      # get a batch of records to send
+      batch_end = i + firehose_max_records_batch
+      datas_with_common_values_batch = datas_with_common_values[i..batch_end]
+      @firehose.put_record_batch(
+        {
+          delivery_stream_name: STREAM_NAME,
+          records: datas_with_common_values_batch.to_json
+        }
+      )
+      i += firehose_max_records_batch
+    end
   # Swallow and log all errors because an issue sending analytics should not prevent the caller from continuing.
   rescue StandardError => error
     # TODO(suresh): if the exception is Firehose ServiceUnavailableException, we should consider
     # backing off and retrying.
     # See http://docs.aws.amazon.com/sdkforruby/api/Aws/Firehose/Client.html#put_record-instance_method.
     Honeybadger.notify(error)
+  end
+
+  # Posts a record to the analytics stream.
+  # @param data [hash] The data to insert into the stream.
+  def put_record(data)
+    put_record_batch([data])
   end
 
   private
