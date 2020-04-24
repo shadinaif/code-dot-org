@@ -345,3 +345,5 @@ gem 'hammerspace'
 gem 'require_all', require: false
 
 gem 'dotiw'
+
+gem 'request_store'

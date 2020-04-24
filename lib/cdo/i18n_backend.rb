@@ -2,7 +2,8 @@ require 'i18n'
 require 'active_support/core_ext/numeric/bytes'
 require 'cdo/key_value'
 require 'cdo/honeybadger'
-require 'cdo/i18n_string_url_tracker' #DAYNE is this right?
+require 'cdo/i18n_string_url_tracker'
+require 'request_store'
 
 module Cdo
   module I18n

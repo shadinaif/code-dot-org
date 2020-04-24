@@ -1005,6 +1005,7 @@ DEPENDENCIES
   redcarpet (~> 3.3.4)
   redis (~> 3.3.3)
   redis-slave-read!
+  request_store
   require_all
   rerun
   responders (~> 2.0)

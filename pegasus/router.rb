@@ -23,6 +23,7 @@ require 'active_support/core_ext/hash'
 require 'sass'
 require 'sass/plugin'
 require 'haml'
+require 'request_store'
 
 if rack_env?(:production)
   require 'newrelic_rpm'
