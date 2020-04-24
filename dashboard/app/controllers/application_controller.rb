@@ -24,6 +24,8 @@ class ApplicationController < ActionController::Base
 
   before_action :clear_sign_up_session_vars
 
+  before_action :setup_i18n_tracking
+
   def fix_crawlers_with_bad_accept_headers
     # append text/html as an acceptable response type for Edmodo and weebly-agent's malformed HTTP_ACCEPT header.
     if request.formats.include?("image/*") &&
@@ -143,8 +145,11 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_in) {|u| u.permit PERMITTED_USER_FIELDS}
   end
 
-  def with_locale
+  def setup_i18n_tracking
     RequestStore.store[:current_request_url] = request.url
+  end
+
+  def with_locale
     I18n.with_locale(locale) do
       yield
     end

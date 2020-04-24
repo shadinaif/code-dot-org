@@ -121,6 +121,10 @@ class Documents < Sinatra::Base
   end
 
   before do
+    RequestStore.store[:current_request_url] = request.url
+  end
+
+  before do
     $log.debug request.url
 
     Honeybadger.context({url: request.url, locale: request.locale})
