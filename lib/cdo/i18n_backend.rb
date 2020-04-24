@@ -141,6 +141,7 @@ module Cdo
       end
     end
 
+    # Plugin for logging usage information about i18n strings.
     module I18nStringUrlTrackerPlugin
       def translate(locale, key, options = ::I18n::EMPTY_HASH)
         result = super(locale, key, options)

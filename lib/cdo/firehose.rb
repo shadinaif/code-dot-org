@@ -5,18 +5,21 @@ require 'aws-sdk-firehose'
 # @example
 #   FirehoseClient.instance.put_record(
 #     {
-#       study: 'underwater basket weaving', # REQUIRED
-#       study_group: 'control',             # OPTIONAL
-#       script_id: script.id,               # OPTIONAL
-#       level_id: level.id,                 # OPTIONAL
-#       project_id: project.id,             # OPTIONAL
-#       user_id: user.id,                   # OPTIONAL
-#       event: 'drowning',                  # REQUIRED
-#       data_int: 2,                        # OPTIONAL
-#       data_float: 1.8,                    # OPTIONAL
-#       data_string: 'hello world',         # OPTIONAL
-#       data_json: "{\"key\":\"value\"}"    # OPTIONAL
+#       study: 'underwater basket weaving',
+#       study_group: 'control',
+#       script_id: script.id
 #     }
+#   )
+#
+# @example
+#   FirehoseClient.instance.put_record_batch(
+#     [
+#       {
+#         study: 'underwater basket weaving',
+#         study_group: 'control',
+#         script_id: script.id
+#       }, ...
+#     ]
 #   )
 
 STREAM_NAME = 'analysis-events'.freeze
@@ -25,6 +28,8 @@ class FirehoseClient
   include Singleton
 
   REGION = 'us-east-1'.freeze
+  # Max number of records Firehose allows to be pushed in a batch.
+  FIREHOSE_PUT_MAX_RECORDS = 500
 
   # Initializes the @firehose to an AWS Firehose client.
   def initialize
@@ -35,28 +40,29 @@ class FirehoseClient
   end
 
   def put_record_batch(datas)
-    return unless Gatekeeper.allows('firehose', default: true)
     return if datas.nil_or_empty?
+    return unless Gatekeeper.allows('firehose', default: true)
 
+    # convert the given data into the format Firehose expects
     datas_with_common_values = []
     datas.each do |data|
       datas_with_common_values << {data: add_common_values(data)}
     end
 
+    # don't update our Firehose tables on dev or test environments.
     if [:development, :test].include? rack_env
       CDO.log.info "Skipped sending record to #{STREAM_NAME}: "
       CDO.log.info datas
       return
     end
 
-    # AWS Firehose documents that put_record_batch can only handle 500
-    # records at a time so we will break up the data into 500 chunks and send
-    # it.
-    firehose_max_records_batch = 500
+    # AWS Firehose batch_put has a limit on how many records can be uploaded
+    # at once. This will break up the list of records in multiple lists of
+    # the max batch size and then upload those.
     i = 0
     while i < datas_with_common_values.size
       # get a batch of records to send
-      batch_end = i + firehose_max_records_batch
+      batch_end = i + FIREHOSE_PUT_MAX_RECORDS
       datas_with_common_values_batch = datas_with_common_values[i..batch_end]
       @firehose.put_record_batch(
         {
@@ -64,7 +70,7 @@ class FirehoseClient
           records: datas_with_common_values_batch.to_json
         }
       )
-      i += firehose_max_records_batch
+      i += FIREHOSE_PUT_MAX_RECORDS
     end
   # Swallow and log all errors because an issue sending analytics should not prevent the caller from continuing.
   rescue StandardError => error

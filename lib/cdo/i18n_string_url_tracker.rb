@@ -4,9 +4,9 @@ require 'cdo/firehose'
 class I18nStringUrlTracker
   @@buffer = Concurrent::Set[]
   @@update_thread = nil
-  UPDATE_THREAD_PERIOD = 5 #seconds
+  UPDATE_THREAD_PERIOD = 300 #5 minutes
 
-  # starts a new thread which will periodically upload the recorded data.
+  # starts a worker thread which will periodically upload the recorded data.
   def self.create_update_worker_thread
     Thread.new do
       Thread.current.thread_variable_set(:buffer, Set[])
@@ -17,6 +17,7 @@ class I18nStringUrlTracker
     end
   end
 
+  # sends the buffered string:url association data to Firehose.
   def self.upload_data
     # upload the data to Firehose.
     FirehoseClient.instance.put_record_batch(@@buffer)
