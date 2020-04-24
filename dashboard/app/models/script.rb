@@ -1765,4 +1765,8 @@ class Script < ActiveRecord::Base
   def self.get_version_year_options
     Course.get_version_year_options
   end
+
+  def all_descendant_levels
+    levels
+  end
 end
