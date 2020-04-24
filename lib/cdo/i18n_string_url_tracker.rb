@@ -1,7 +1,6 @@
-require 'set'
+require 'concurrent'
 class I18nStringUrlTracker
-  # TODO: use a thread-safe Set
-  @@buffer = Set[]
+  @@buffer = Concurrent::Set[]
   @@update_thread = nil
   UPDATE_THREAD_PERIOD = 5 #seconds
 
