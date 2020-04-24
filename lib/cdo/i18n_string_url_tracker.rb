@@ -26,6 +26,6 @@ class I18nStringUrlTracker
     # create an update_thread if there isn't one already.
     @@update_thread = create_update_worker_thread unless @@update_thread && @@update_thread.alive?
     # record the string : url association.
-    @@buffer.add([string_key, url])
+    @@buffer.add({string_key: string_key, url: url})
   end
 end

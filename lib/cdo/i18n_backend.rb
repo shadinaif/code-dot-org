@@ -145,7 +145,8 @@ module Cdo
       def translate(locale, key, options = ::I18n::EMPTY_HASH)
         result = super(locale, key, options)
         url = RequestStore.store[:current_request_url]
-        I18nStringUrlTracker.log_association(key, url) if key && url
+        normalized_key = key.to_s.downcase
+        I18nStringUrlTracker.log_association(normalized_key, url) if key && url
         result
       end
     end
