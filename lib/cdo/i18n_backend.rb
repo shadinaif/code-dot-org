@@ -144,7 +144,8 @@ module Cdo
     module I18nStringUrlTrackerPlugin
       def translate(locale, key, options = ::I18n::EMPTY_HASH)
         result = super(locale, key, options)
-        I18nStringUrlTracker.log_association(key, "http://todo.com") if key
+        url = RequestStore.store[:current_request_url]
+        I18nStringUrlTracker.log_association(key, url) if key && url
         result
       end
     end

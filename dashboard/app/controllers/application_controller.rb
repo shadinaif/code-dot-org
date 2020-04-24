@@ -144,6 +144,7 @@ class ApplicationController < ActionController::Base
   end
 
   def with_locale
+    RequestStore.store[:current_request_url] = request.url
     I18n.with_locale(locale) do
       yield
     end

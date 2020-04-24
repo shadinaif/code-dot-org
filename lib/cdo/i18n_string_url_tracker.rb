@@ -19,6 +19,7 @@ class I18nStringUrlTracker
   def self.upload_data
     # upload the data to Firehose.
     CDO.log.info "@@buffer=#{@@buffer}"
+    @@buffer.clear
   end
 
   def self.log_association(string_key, url)
