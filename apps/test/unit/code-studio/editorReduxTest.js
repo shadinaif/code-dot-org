@@ -90,7 +90,7 @@ describe('editorRedux reducer tests', () => {
     assert.equal(nextState.stages[0].levels[0].concepts, '_d_');
   });
 
-  describe('flex categories', () => {
+  describe('lesson groups', () => {
     let initialStages = [];
 
     beforeEach(() => {
@@ -145,8 +145,8 @@ describe('editorRedux reducer tests', () => {
       );
     });
 
-    describe('set flex category', () => {
-      it('moves unique flex category to the end of the script', () => {
+    describe('set lesson group', () => {
+      it('moves unique lesson group to the end of the script', () => {
         let state = reducer(initialState, setLessonGroup(2, 'Z'));
         assert.deepEqual(
           [
@@ -159,7 +159,7 @@ describe('editorRedux reducer tests', () => {
         );
       });
 
-      it('groups with others in same flex category', () => {
+      it('groups with others in same lesson group', () => {
         const newState = reducer(initialState, setLessonGroup(4, 'X'));
         assert.deepEqual(
           [
