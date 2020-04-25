@@ -3,45 +3,45 @@ import {shallow} from 'enzyme';
 import {expect} from '../../../util/reconfiguredChai';
 import sinon from 'sinon';
 
-import {UnconnectedStageCard as StageCard} from '@cdo/apps/lib/script-editor/StageCard';
+import {UnconnectedLessonCard as LessonCard} from '@cdo/apps/lib/script-editor/LessonCard';
 
-describe('StageCard', () => {
+describe('LessonCard', () => {
   let reorderLevel,
-    moveLevelToStage,
+    moveLevelToLesson,
     addLevel,
-    setStageLockable,
-    setFlexCategory,
-    setTargetStage,
+    setLessonLockable,
+    setLessonGroup,
+    setTargetLesson,
     defaultProps;
 
   beforeEach(() => {
     reorderLevel = sinon.spy();
-    moveLevelToStage = sinon.spy();
+    moveLevelToLesson = sinon.spy();
     addLevel = sinon.spy();
-    setStageLockable = sinon.spy();
-    setFlexCategory = sinon.spy();
-    setTargetStage = sinon.spy();
+    setLessonLockable = sinon.spy();
+    setLessonGroup = sinon.spy();
+    setTargetLesson = sinon.spy();
     defaultProps = {
       reorderLevel,
-      moveLevelToStage,
+      moveLevelToLesson,
       addLevel,
-      setStageLockable,
-      stagesCount: 1,
+      setLessonLockable,
+      lessonsCount: 1,
       stage: {
         levels: [],
         position: 1,
         lockable: false
       },
-      stageMetrics: {},
-      setFlexCategory,
-      setTargetStage,
-      targetStagePos: null
+      lessonMetrics: {},
+      setLessonGroup,
+      setTargetLesson,
+      targetLessonPos: null
     };
   });
 
   it('displays lockable property', () => {
-    let wrapper = shallow(<StageCard {...defaultProps} />);
-    let labelText = 'Require teachers to unlock this stage';
+    let wrapper = shallow(<LessonCard {...defaultProps} />);
+    let labelText = 'Require teachers to unlock this lesson';
     let label = wrapper.findWhere(
       n => n.name() === 'label' && n.text().includes(labelText)
     );
@@ -54,8 +54,8 @@ describe('StageCard', () => {
         lockable: true
       }
     };
-    wrapper = shallow(<StageCard {...props} />);
-    labelText = 'Require teachers to unlock this stage';
+    wrapper = shallow(<LessonCard {...props} />);
+    labelText = 'Require teachers to unlock this lesson';
     label = wrapper.findWhere(
       n => n.name() === 'label' && n.text().includes(labelText)
     );

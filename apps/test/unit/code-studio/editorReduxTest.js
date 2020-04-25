@@ -2,13 +2,13 @@ import {assert} from 'chai';
 import {combineReducers} from 'redux';
 import reducers, {
   reorderLevel,
-  moveLevelToStage,
+  moveLevelToLesson,
   addGroup,
-  addStage,
-  moveStage,
+  addLesson,
+  moveLesson,
   setActiveVariant,
   setField,
-  setFlexCategory
+  setLessonGroup
 } from '@cdo/apps/lib/script-editor/editorRedux';
 
 const getInitialState = () => ({
@@ -60,7 +60,7 @@ describe('editorRedux reducer tests', () => {
     assert.deepEqual(nextState[0].levels.map(l => l.activeId), [5, 1, 4, 6]);
   });
   it('moves level to stage', () => {
-    const nextState = reducer(initialState, moveLevelToStage(1, 3, 2)).stages;
+    const nextState = reducer(initialState, moveLevelToLesson(1, 3, 2)).stages;
     assert.deepEqual(nextState[0].levels.map(l => l.activeId), [1, 4, 6]);
     assert.deepEqual(nextState[1].levels.map(l => l.activeId), [3, 5]);
   });
@@ -72,7 +72,7 @@ describe('editorRedux reducer tests', () => {
     assert.equal(nextState[nextState.length - 1].name, 'New Stage 1');
   });
   it('add stage', () => {
-    const nextState = reducer(initialState, addStage(1, 'New Stage 2')).stages;
+    const nextState = reducer(initialState, addLesson(1, 'New Stage 2')).stages;
     assert.deepEqual(nextState.map(s => s.name), ['A', 'New Stage 2', 'B']);
   });
   it('set active variant', () => {
@@ -106,7 +106,7 @@ describe('editorRedux reducer tests', () => {
     it('moves a stage up three times', () => {
       const id = 104;
       let position = initialState.stages.find(s => s.id === id).position;
-      let state = reducer(initialState, moveStage(position, 'up'));
+      let state = reducer(initialState, moveLesson(position, 'up'));
       assert.deepEqual(
         [
           {flex_category: 'X', id: 101, position: 1, relativePosition: 1},
@@ -119,7 +119,7 @@ describe('editorRedux reducer tests', () => {
       );
 
       position = state.stages.find(s => s.id === id).position;
-      state = reducer(state, moveStage(position, 'up'));
+      state = reducer(state, moveLesson(position, 'up'));
       assert.deepEqual(
         [
           {flex_category: 'X', id: 101, position: 1, relativePosition: 1},
@@ -132,7 +132,7 @@ describe('editorRedux reducer tests', () => {
       );
 
       position = state.stages.find(s => s.id === id).position;
-      state = reducer(state, moveStage(position, 'up'));
+      state = reducer(state, moveLesson(position, 'up'));
       assert.deepEqual(
         [
           {flex_category: 'X', id: 101, position: 1, relativePosition: 1},
@@ -147,7 +147,7 @@ describe('editorRedux reducer tests', () => {
 
     describe('set flex category', () => {
       it('moves unique flex category to the end of the script', () => {
-        let state = reducer(initialState, setFlexCategory(2, 'Z'));
+        let state = reducer(initialState, setLessonGroup(2, 'Z'));
         assert.deepEqual(
           [
             {flex_category: 'X', id: 101, position: 1, relativePosition: 1},
@@ -160,7 +160,7 @@ describe('editorRedux reducer tests', () => {
       });
 
       it('groups with others in same flex category', () => {
-        const newState = reducer(initialState, setFlexCategory(4, 'X'));
+        const newState = reducer(initialState, setLessonGroup(4, 'X'));
         assert.deepEqual(
           [
             {flex_category: 'X', id: 101, position: 1, relativePosition: 1},

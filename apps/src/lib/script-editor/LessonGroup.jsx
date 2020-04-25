@@ -6,9 +6,9 @@ import _ from 'lodash';
 import color from '../../util/color';
 import {borderRadius, ControlTypes} from './constants';
 import OrderControls from './OrderControls';
-import StageCard from './StageCard';
-import {NEW_LEVEL_ID, addStage, addGroup} from './editorRedux';
-import FlexCategorySelector from './FlexCategorySelector';
+import LessonCard from './LessonCard';
+import {NEW_LEVEL_ID, addLesson, addGroup} from './editorRedux';
+import LessonGroupSelector from './LessonGroupSelector';
 
 const styles = {
   groupHeader: {
@@ -34,7 +34,7 @@ const styles = {
     boxShadow: 'none',
     margin: '0 0 30px 0'
   },
-  addStage: {
+  addLesson: {
     fontSize: 14,
     color: '#5b6770',
     background: 'white',
@@ -42,7 +42,7 @@ const styles = {
     boxShadow: 'none',
     margin: '0 10px 10px 10px'
   },
-  flexCategorySelector: {
+  lessonGroupSelector: {
     height: 30,
     marginBottom: 30
   }
@@ -51,67 +51,67 @@ const styles = {
 // Replace ' with \'
 const escape = str => str.replace(/'/, "\\'");
 
-class FlexGroup extends Component {
+class LessonGroup extends Component {
   static propTypes = {
     addGroup: PropTypes.func.isRequired,
-    addStage: PropTypes.func.isRequired,
-    stages: PropTypes.array.isRequired,
+    addLesson: PropTypes.func.isRequired,
+    lessons: PropTypes.array.isRequired,
     levelKeyList: PropTypes.object.isRequired,
-    flexCategoryMap: PropTypes.object.isRequired
+    lessonGroupMap: PropTypes.object.isRequired
   };
 
   state = {
-    addingFlexCategory: false,
-    // Which stage a level is currently being dragged to.
-    targetStagePos: null
+    addingLessonGroup: false,
+    // Which lesson a level is currently being dragged to.
+    targetLessonPos: null
   };
 
-  handleAddFlexCategory = () => {
+  handleAddLessonGroup = () => {
     this.setState({
-      addingFlexCategory: true
+      addingLessonGroup: true
     });
   };
 
-  createFlexCategory = newFlexCategory => {
-    this.hideFlexCategorySelector();
-    const newStageName = prompt('Enter new stage name');
-    if (newStageName) {
-      this.props.addGroup(newStageName, newFlexCategory);
+  createLessonGroup = newLessonGroup => {
+    this.hideLessonGroupSelector();
+    const newLessonName = prompt('Enter new lesson name');
+    if (newLessonName) {
+      this.props.addGroup(newLessonName, newLessonGroup);
     }
   };
 
-  hideFlexCategorySelector = () => {
-    this.setState({addingFlexCategory: false});
+  hideLessonGroupSelector = () => {
+    this.setState({addingLessonGroup: false});
   };
 
-  handleAddStage = position => {
-    const newStageName = prompt('Enter new stage name');
-    if (newStageName) {
-      this.props.addStage(position, newStageName);
+  handleAddLesson = position => {
+    const newLessonName = prompt('Enter new lesson name');
+    if (newLessonName) {
+      this.props.addLesson(position, newLessonName);
     }
   };
 
-  setTargetStage = targetStagePos => {
-    this.setState({targetStagePos});
+  setTargetLesson = targetLessonPos => {
+    this.setState({targetLessonPos});
   };
 
   /**
    * Generate the ScriptDSL format.
-   * @param stages
+   * @param lessons
    * @return {string}
    */
-  serializeStages = stages => {
+  serializeLessons = lessons => {
     let s = [];
-    stages.forEach(stage => {
-      let t = `stage '${escape(stage.name)}'`;
-      if (stage.lockable) {
+    lessons.forEach(lesson => {
+      let t = `stage '${escape(lesson.name)}'`;
+      if (lesson.lockable) {
         t += ', lockable: true';
       }
-      if (stage.flex_category) {
-        t += `, flex_category: '${escape(stage.flex_category)}'`;
+      if (lesson.flex_category) {
+        t += `, flex_category: '${escape(lesson.flex_category)}'`;
       }
       s.push(t);
-      stage.levels.forEach(level => {
+      lesson.levels.forEach(level => {
         if (level.ids.length > 1) {
           s.push('variants');
           level.ids.forEach(id => {
@@ -170,90 +170,90 @@ class FlexGroup extends Component {
     return s;
   }
 
-  // To be populated with the bounding client rect of each StageCard element.
-  stageMetrics = {};
+  // To be populated with the bounding client rect of each LessonCard element.
+  lessonMetrics = {};
 
   render() {
     const groups = _.groupBy(
-      this.props.stages,
-      stage => stage.flex_category || ''
+      this.props.lessons,
+      lesson => lesson.flex_category || ''
     );
-    let afterStage = 1;
-    const {flexCategoryMap} = this.props;
+    let afterLesson = 1;
+    const {lessonGroupMap} = this.props;
 
     return (
       <div>
         {_.keys(groups).map(group => (
           <div key={group}>
             <div style={styles.groupHeader}>
-              Flex Category: {group || '(none)'}: "
-              {flexCategoryMap[group] || 'Content'}"
+              Lesson Group: {group || '(none)'}: "
+              {lessonGroupMap[group] || 'Content'}"
               <OrderControls
                 type={ControlTypes.Group}
-                position={afterStage}
+                position={afterLesson}
                 total={Object.keys(groups).length}
                 name={group || '(none)'}
               />
             </div>
             <div style={styles.groupBody}>
-              {groups[group].map((stage, index) => {
-                afterStage++;
+              {groups[group].map((lesson, index) => {
+                afterLesson++;
                 return (
-                  <StageCard
-                    key={`stage-${index}`}
-                    stagesCount={this.props.stages.length}
-                    stage={stage}
-                    ref={stageCard => {
-                      if (stageCard) {
+                  <LessonCard
+                    key={`lesson-${index}`}
+                    lessonsCount={this.props.lessons.length}
+                    lesson={lesson}
+                    ref={lessonCard => {
+                      if (lessonCard) {
                         const metrics = ReactDOM.findDOMNode(
-                          stageCard
+                          lessonCard
                         ).getBoundingClientRect();
-                        this.stageMetrics[stage.position] = metrics;
+                        this.lessonMetrics[lesson.position] = metrics;
                       }
                     }}
-                    stageMetrics={this.stageMetrics}
-                    setTargetStage={this.setTargetStage}
-                    targetStagePos={this.state.targetStagePos}
+                    lessonMetrics={this.lessonMetrics}
+                    setTargetLesson={this.setTargetLesson}
+                    targetLessonPos={this.state.targetLessonPos}
                   />
                 );
               })}
               <button
-                onMouseDown={this.handleAddStage.bind(null, afterStage - 1)}
+                onMouseDown={this.handleAddLesson.bind(null, afterLesson - 1)}
                 className="btn"
-                style={styles.addStage}
+                style={styles.addLesson}
                 type="button"
               >
                 <i style={{marginRight: 7}} className="fa fa-plus-circle" />
-                Add Stage
+                Add Lesson
               </button>
             </div>
           </div>
         ))}
-        {!this.state.addingFlexCategory && (
+        {!this.state.addingLessonGroup && (
           <button
-            onMouseDown={this.handleAddFlexCategory}
+            onMouseDown={this.handleAddLessonGroup}
             className="btn"
             style={styles.addGroup}
             type="button"
           >
             <i style={{marginRight: 7}} className="fa fa-plus-circle" />
-            Add Flex Category
+            Add Lesson Group
           </button>
         )}
-        {this.state.addingFlexCategory && (
-          <div style={styles.flexCategorySelector}>
-            <FlexCategorySelector
-              labelText="New Flex Category"
+        {this.state.addingLessonGroup && (
+          <div style={styles.lessonGroupSelector}>
+            <LessonGroupSelector
+              labelText="New Lesson Group"
               confirmButtonText="Create"
-              onConfirm={this.createFlexCategory}
-              onCancel={this.hideFlexCategorySelector}
+              onConfirm={this.createLessonGroup}
+              onCancel={this.hideLessonGroupSelector}
             />
           </div>
         )}
         <input
           type="hidden"
           name="script_text"
-          value={this.serializeStages(this.props.stages)}
+          value={this.serializeLessons(this.props.lessons)}
         />
       </div>
     );
@@ -263,15 +263,15 @@ class FlexGroup extends Component {
 export default connect(
   state => ({
     levelKeyList: state.levelKeyList,
-    stages: state.stages,
-    flexCategoryMap: state.flexCategoryMap
+    lessons: state.lessons,
+    lessonGroupMap: state.lessonGroupMap
   }),
   dispatch => ({
-    addGroup(stageName, groupName) {
-      dispatch(addGroup(stageName, groupName));
+    addGroup(lessonName, groupName) {
+      dispatch(addGroup(lessonName, groupName));
     },
-    addStage(position, stageName) {
-      dispatch(addStage(position, stageName));
+    addLesson(position, lessonName) {
+      dispatch(addLesson(position, lessonName));
     }
   })
-)(FlexGroup);
+)(LessonGroup);

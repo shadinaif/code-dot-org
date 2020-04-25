@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import FlexGroup from './FlexGroup';
+import LessonGroup from './LessonGroup';
 import StageDescriptions from './StageDescriptions';
 import ScriptAnnouncementsEditor from './ScriptAnnouncementsEditor';
 import ProgressLegend from '@cdo/apps/templates/progress/ProgressLegend';
@@ -56,7 +56,7 @@ export default class ScriptEditor extends React.Component {
     projectWidgetTypes: PropTypes.arrayOf(PropTypes.string),
     teacherResources: PropTypes.arrayOf(resourceShape).isRequired,
     stageExtrasAvailable: PropTypes.bool,
-    stageLevelData: PropTypes.string,
+    lessonLevelData: PropTypes.string,
     hasVerifiedResources: PropTypes.bool,
     hasLessonPlan: PropTypes.bool,
     curriculumPath: PropTypes.string,
@@ -104,7 +104,7 @@ export default class ScriptEditor extends React.Component {
 
   presubmit = e => {
     const videoKeysBefore = (
-      this.props.stageLevelData.match(VIDEO_KEY_REGEX) || []
+      this.props.lessonLevelData.match(VIDEO_KEY_REGEX) || []
     ).length;
     const scriptText = this.props.beta ? '' : this.scriptTextArea.value;
     const videoKeysAfter = (scriptText.match(VIDEO_KEY_REGEX) || []).length;
@@ -123,8 +123,8 @@ export default class ScriptEditor extends React.Component {
 
   render() {
     const {betaWarning} = this.props;
-    const textAreaRows = this.props.stageLevelData
-      ? this.props.stageLevelData.split('\n').length + 5
+    const textAreaRows = this.props.lessonLevelData
+      ? this.props.lessonLevelData.split('\n').length + 5
       : 10;
     return (
       <div>
@@ -512,7 +512,7 @@ export default class ScriptEditor extends React.Component {
         </div>
         <h2>Stages and Levels</h2>
         {this.props.beta ? (
-          <FlexGroup />
+          <LessonGroup />
         ) : (
           <div>
             {betaWarning || (
@@ -526,7 +526,7 @@ export default class ScriptEditor extends React.Component {
               rows={textAreaRows}
               style={styles.input}
               defaultValue={
-                this.props.stageLevelData ||
+                this.props.lessonLevelData ||
                 "lesson_group 'lesson group', display_name: 'display name'\nstage 'new stage'\n"
               }
               ref={textArea => (this.scriptTextArea = textArea)}
