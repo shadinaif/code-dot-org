@@ -5,21 +5,18 @@ require 'aws-sdk-firehose'
 # @example
 #   FirehoseClient.instance.put_record(
 #     {
-#       study: 'underwater basket weaving',
-#       study_group: 'control',
-#       script_id: script.id
+#       study: 'underwater basket weaving', # REQUIRED
+#       study_group: 'control',             # OPTIONAL
+#       script_id: script.id,               # OPTIONAL
+#       level_id: level.id,                 # OPTIONAL
+#       project_id: project.id,             # OPTIONAL
+#       user_id: user.id,                   # OPTIONAL
+#       event: 'drowning',                  # REQUIRED
+#       data_int: 2,                        # OPTIONAL
+#       data_float: 1.8,                    # OPTIONAL
+#       data_string: 'hello world',         # OPTIONAL
+#       data_json: "{\"key\":\"value\"}"    # OPTIONAL
 #     }
-#   )
-#
-# @example
-#   FirehoseClient.instance.put_record_batch(
-#     [
-#       {
-#         study: 'underwater basket weaving',
-#         study_group: 'control',
-#         script_id: script.id
-#       }, ...
-#     ]
 #   )
 
 STREAM_NAME = 'analysis-events'.freeze
