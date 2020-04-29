@@ -1,5 +1,3 @@
-import Blockly from '@code-dot-org/blockly';
-
 /**
  * Shrink the DOM element containing the given blockSpace to the minimum size
  * required to contain the block space
