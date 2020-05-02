@@ -134,14 +134,14 @@ export class UnconnectedLessonCard extends Component {
       }
     );
     this.setState({currentPositions, newPosition});
-    const targetLessonPos = this.getTargetStage(clientY);
+    const targetLessonPos = this.getTargetLesson(clientY);
     this.props.setTargetLesson(targetLessonPos);
   };
 
   // Given a clientY value of a location on the screen, find the LessonCard
   // corresponding to that location, and return the position of the
   // corresponding lesson within the script.
-  getTargetStage = y => {
+  getTargetLesson = y => {
     const {lessonMetrics} = this.props;
     const lessonPos = Object.keys(lessonMetrics).find(lessonPos => {
       const lessonRect = lessonMetrics[lessonPos];
@@ -224,12 +224,12 @@ export class UnconnectedLessonCard extends Component {
   render() {
     const {lesson, targetLessonPos} = this.props;
     const {draggedLevelPos, levelPosToRemove} = this.state;
-    const isTargetStage = targetLessonPos === lesson.position;
+    const isTargetLesson = targetLessonPos === lesson.position;
     return (
-      <div style={isTargetStage ? styles.targetLessonCard : styles.lessonCard}>
+      <div style={isTargetLesson ? styles.targetLessonCard : styles.lessonCard}>
         <div style={styles.lessonCardHeader}>
           {!lesson.lockable && (
-            <span>Stage {lesson.relativePosition}:&nbsp;</span>
+            <span>Lesson {lesson.relativePosition}:&nbsp;</span>
           )}
           {lesson.name}
           <OrderControls
