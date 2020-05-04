@@ -27,7 +27,7 @@ describe('LessonCard', () => {
       addLevel,
       setLessonLockable,
       lessonsCount: 1,
-      stage: {
+      lesson: {
         levels: [],
         position: 1,
         lockable: false
@@ -49,8 +49,8 @@ describe('LessonCard', () => {
 
     const props = {
       ...defaultProps,
-      stage: {
-        ...defaultProps.stage,
+      lesson: {
+        ...defaultProps.lesson,
         lockable: true
       }
     };

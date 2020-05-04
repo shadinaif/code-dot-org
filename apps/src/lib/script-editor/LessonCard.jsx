@@ -233,7 +233,7 @@ export class UnconnectedLessonCard extends Component {
           )}
           {lesson.name}
           <OrderControls
-            type={ControlTypes.Stage}
+            type={ControlTypes.Lesson}
             position={lesson.position}
             total={this.props.lessonsCount}
             name={this.props.lesson.name}

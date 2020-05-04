@@ -59,27 +59,32 @@ describe('editorRedux reducer tests', () => {
     const nextState = reducer(initialState, reorderLevel(1, 3, 1)).lessons;
     assert.deepEqual(nextState[0].levels.map(l => l.activeId), [5, 1, 4, 6]);
   });
-  it('moves level to stage', () => {
+
+  it('moves level to lesson', () => {
     const nextState = reducer(initialState, moveLevelToLesson(1, 3, 2)).lessons;
     assert.deepEqual(nextState[0].levels.map(l => l.activeId), [1, 4, 6]);
     assert.deepEqual(nextState[1].levels.map(l => l.activeId), [3, 5]);
   });
+
   it('add group', () => {
     const nextState = reducer(
       initialState,
-      addGroup('New Stage 1', 'New Group')
+      addGroup('New Lesson 1', 'New Group')
     ).lessons;
-    assert.equal(nextState[nextState.length - 1].name, 'New Stage 1');
+    assert.equal(nextState[nextState.length - 1].name, 'New Lesson 1');
   });
-  it('add stage', () => {
-    const nextState = reducer(initialState, addLesson(1, 'New Stage 2'))
+
+  it('add lesson', () => {
+    const nextState = reducer(initialState, addLesson(1, 'New Lesson 2'))
       .lessons;
-    assert.deepEqual(nextState.map(s => s.name), ['A', 'New Stage 2', 'B']);
+    assert.deepEqual(nextState.map(s => s.name), ['A', 'New Lesson 2', 'B']);
   });
+
   it('set active variant', () => {
     const nextState = reducer(initialState, setActiveVariant(2, 1, 2)).lessons;
     assert.equal(nextState[1].levels[0].activeId, 2);
   });
+
   it('set level field', () => {
     let nextState = reducer(initialState, setField(1, 1, {videoKey: '_a_'}));
     assert.equal(nextState.lessons[0].levels[0].videoKey, '_a_');
@@ -92,19 +97,19 @@ describe('editorRedux reducer tests', () => {
   });
 
   describe('lesson groups', () => {
-    let initialStages = [];
+    let initialLessons = [];
 
     beforeEach(() => {
-      initialStages = [
+      initialLessons = [
         {lesson_group: 'X', id: 101, position: 1, relativePosition: 1},
         {lesson_group: 'X', id: 102, position: 2, relativePosition: 2},
         {lesson_group: 'Y', id: 103, position: 3, relativePosition: 3},
         {lesson_group: 'Y', id: 104, position: 4, relativePosition: 4}
       ];
-      initialState.lessons = initialStages;
+      initialState.lessons = initialLessons;
     });
 
-    it('moves a stage up three times', () => {
+    it('moves a lesson up three times', () => {
       const id = 104;
       let position = initialState.lessons.find(s => s.id === id).position;
       let state = reducer(initialState, moveLesson(position, 'up'));

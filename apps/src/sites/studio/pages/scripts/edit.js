@@ -12,8 +12,8 @@ import {valueOr} from '@cdo/apps/utils';
 
 export default function initPage(scriptEditorData) {
   const scriptData = scriptEditorData.script;
-  const lessonLevelData = scriptEditorData.lessonLevelData;
-  const lessons = (scriptData.stages || [])
+  const lessonLevelData = scriptEditorData.stageLevelData;
+  const lessons = (scriptData.lessons || [])
     .filter(lesson => lesson.id)
     .map(lesson => ({
       position: lesson.position,
@@ -62,7 +62,7 @@ export default function initPage(scriptEditorData) {
         hidden={valueOr(scriptData.hidden, true)}
         isStable={scriptData.is_stable}
         loginRequired={scriptData.loginRequired}
-        hideableStages={scriptData.hideable_stages}
+        hideableLessons={scriptData.hideable_stages}
         studentDetailProgressView={scriptData.student_detail_progress_view}
         professionalLearningCourse={scriptData.professionalLearningCourse}
         peerReviewsRequired={scriptData.peerReviewsRequired}
@@ -70,7 +70,7 @@ export default function initPage(scriptEditorData) {
         projectWidgetVisible={scriptData.project_widget_visible}
         projectWidgetTypes={scriptData.project_widget_types}
         teacherResources={teacherResources}
-        stageExtrasAvailable={!!scriptData.stage_extras_available}
+        lessonExtrasAvailable={!!scriptData.stage_extras_available}
         lessonLevelData={lessonLevelData}
         hasVerifiedResources={scriptData.has_verified_resources}
         hasLessonPlan={scriptData.has_lesson_plan}
