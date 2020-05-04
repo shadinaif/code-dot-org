@@ -186,9 +186,7 @@ describe('loadApp.js', () => {
         expect(writtenLevelId).to.be.undefined;
         expect(name).to.equal('_share_image.png');
         expect(blob).to.have.property('type', 'image/png');
-        const expectedPngSize = /PhantomJS/.test(window.navigator.userAgent)
-          ? 523181 // PhantomJS
-          : 38961; // ChromeHeadless
+        const expectedPngSize = 38961; // ChromeHeadless
         expect(blob).to.have.property('size', expectedPngSize);
         done();
       });
