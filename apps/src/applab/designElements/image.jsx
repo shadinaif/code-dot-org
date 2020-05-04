@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import PropTypes from 'prop-types';
 import React from 'react';
+import objectFitImages from 'object-fit-images';
 import PropertyRow from './PropertyRow';
 import ColorPickerPropertyRow from './ColorPickerPropertyRow';
 import BooleanPropertyRow from './BooleanPropertyRow';
@@ -12,7 +13,6 @@ import {ICON_PREFIX_REGEX} from '../constants';
 import EnumPropertyRow from './EnumPropertyRow';
 import BorderProperties from './BorderProperties';
 import * as elementUtils from './elementUtils';
-import {applabObjectFitImages} from '../applabObjectFitImages';
 
 class ImageProperties extends React.Component {
   static propTypes = {
@@ -184,7 +184,7 @@ function setObjectFitStyles(element, value, forceObjectFitNow) {
     // the style in font-family and avoid scale-down & using it in media queries)
     // See https://www.npmjs.com/package/object-fit-images for details.
     //
-    applabObjectFitImages(element);
+    objectFitImages(element);
   }
 }
 
