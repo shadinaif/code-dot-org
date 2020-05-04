@@ -62,13 +62,10 @@ export default function init(options) {
   // Instantiate the renderer and connect it to the VM.
   const canvas = document.getElementById('scratch-stage');
 
-  // PhantomJS doesn't support WebGL.
-  if (!IN_UNIT_TEST) {
-    const renderer = new Renderer(canvas);
-    vm.attachRenderer(renderer);
-    const audioEngine = new AudioEngine();
-    vm.attachAudioEngine(audioEngine);
-  }
+  const renderer = new Renderer(canvas);
+  vm.attachRenderer(renderer);
+  const audioEngine = new AudioEngine();
+  vm.attachAudioEngine(audioEngine);
 
   // Load the project.
   let project = scratchDefaultProject;
