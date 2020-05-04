@@ -227,8 +227,7 @@ describe('castValue', () => {
     it('only allows unquoted strings if allowUnquotedStrings is true', () => {
       expect(castValue('abc', /* allowUnquotedStrings */ true)).to.equal('abc');
       expect(() => castValue('abc', /* allowUnquotedStrings */ false)).to.throw(
-        //      PhantomJS|Chrome
-        /JSON Parse error|Unexpected token/
+        /Unexpected token/
       );
     });
   });
