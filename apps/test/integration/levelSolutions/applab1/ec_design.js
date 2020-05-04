@@ -1717,7 +1717,7 @@ module.exports = {
         var label = designModeViz.find('#design_label1');
         var text_input = designModeViz.find('#design_text_input1');
         assert.equal(button.length, 1, 'button was dragged on screen');
-        assert.equal(image.length, 1), 'image was dragged on screen';
+        assert.equal(image.length, 1, 'image was dragged on screen');
         assert.equal(label.length, 1, 'label was dragged on screen');
         assert.equal(text_input.length, 1, 'text input was dragged on screen');
 
