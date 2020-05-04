@@ -202,8 +202,8 @@ function compileDetails(index, location, initialContent) {
   heading.textContent = location.school_name_s;
   container.appendChild(heading);
 
-  // PhantomJS 2.1.1 doesn't seem to have forEach implemented on NodeList,
-  // so use this old-browser-friendly workaround to iterate over nodes.
+  // IE11 doesn't have forEach implemented on NodeList, so use this
+  // old-browser-friendly workaround to iterate over nodes.
   // @see https://developer.mozilla.org/en-US/docs/Web/API/NodeList
   Array.prototype.forEach.call(initialContent.childNodes, function(child) {
     const clone = child.cloneNode(true);
