@@ -50,6 +50,13 @@ class HelpHeader
       }
     end
 
+    entries << {
+      title: I18n.t("#{loc_prefix}help_support"),
+      url: "https://support.code.org",
+      id: "support",
+      target: "_blank"
+    }
+
     if options[:level] || options[:script_level]
       report_url = options[:script_level] ?
         options[:script_level].report_bug_url(options[:request]) :
@@ -68,9 +75,10 @@ class HelpHeader
     end
 
     entries << {
-      title: I18n.t("#{loc_prefix}help_support"),
-      url: "https://support.code.org",
-      id: "support"
+      title: I18n.t("#{loc_prefix}report_abuse"),
+      url: "/report_abuse",
+      id: "report-abuse",
+      target: "_blank"
     }
 
     if options[:user_type] == "teacher"

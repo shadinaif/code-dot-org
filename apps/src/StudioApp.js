@@ -806,7 +806,7 @@ export function makeFooterMenuItems() {
     },
     {
       text: msg.copyright(),
-      link: '#',
+      link: 'javascript:void(0)',
       copyright: true
     },
     {
