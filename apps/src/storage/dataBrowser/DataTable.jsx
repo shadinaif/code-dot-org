@@ -207,10 +207,11 @@ class DataTable extends React.Component {
     let editingColumn = this.state.editingColumn;
 
     let rowsPerPage = this.props.rowsPerPage || MAX_ROWS_PER_PAGE;
-    let numPages = Math.max(
-      1,
-      Math.ceil(this.props.tableRecords.length / rowsPerPage)
-    );
+    // The 0 entry in the tableRecords array is empty but still counts towards the length, so a
+    // table with 10 rows will have tableRecords.length == 11. We should subtract 1 here so that
+    // we paginate correctly.
+    let numRecords = this.props.tableRecords.length - 1;
+    let numPages = Math.max(1, Math.ceil(numRecords / rowsPerPage));
     let rows = this.getRowsForCurrentPage(rowsPerPage);
 
     // Always show at least one column.
