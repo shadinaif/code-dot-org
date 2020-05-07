@@ -82,7 +82,7 @@ export class WorkshopManagement extends React.Component {
     let workshop_date = new Date(this.props.date);
 
     return (
-      workshop_date >= new Date('2020-04-30') &&
+      workshop_date >= new Date('2020-05-08') &&
       this.props.subject === SubjectNames.SUBJECT_CSF_101 &&
       this.props.course === 'CS Fundamentals'
     );
