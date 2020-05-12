@@ -1,0 +1,25 @@
+version: '3'
+
+
+services:
+  code-dot-org:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: code-dot-org:latest
+    container_name: code-dot-org
+    volumes:
+      - ../:/code-dot-org:cached
+      - rbenv:/root/.rbenv
+      - mysqldata:/var/lib/mysql
+      - yarncache:/usr/local/share/.cache/yarn/v4
+    ports:
+    - 3000:3000
+    - 3306:3306
+    - 33060:33060
+
+volumes:
+  mysqldata:
+  rbenv:
+  yarncache:
+

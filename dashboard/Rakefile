@@ -6,6 +6,8 @@ require File.expand_path('../config/application', __FILE__)
 Dashboard::Application.load_tasks
 
 namespace :dashboard do
+  puts "oooooooooooooooooooooooooooooooooooooo"
   task setup_db: ['db:setup_or_migrate', 'seed:default'] do
+  puts "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
   end
 end

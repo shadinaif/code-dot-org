@@ -18,6 +18,8 @@ gem 'rails-controller-testing'
 gem 'sprockets', github: 'wjordan/sprockets', ref: 'concurrent_asset_bundle_3.x'
 gem 'sprockets-rails'
 
+gem 'tzinfo-data'
+
 # provide `respond_to` methods
 # (see: http://guides.rubyonrails.org/4_2_release_notes.html#respond-with-class-level-respond-to)
 gem 'responders', '~> 2.0'

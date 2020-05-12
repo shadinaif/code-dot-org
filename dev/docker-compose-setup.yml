@@ -1,0 +1,5 @@
+version: '3'
+
+services:
+  code-dot-org:
+    command: bash -c "./dev/dev_setup.sh"

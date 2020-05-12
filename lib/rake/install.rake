@@ -36,17 +36,24 @@ namespace :install do
 
   desc 'Install Dashboard rubygems and setup database.'
   task :dashboard do
+    puts '000000000000000000000000000000000'
     if RakeUtils.local_environment?
+      puts '111111111111111111111111111111111111111'
       Dir.chdir(dashboard_dir) do
+        puts '33333333333333333333333333333333333333333'
         RakeUtils.bundle_install
+        puts '4444444444444444444444444444444444'
         puts CDO.dashboard_db_writer
         if ENV['CI']
           # Prepare for dashboard unit tests to run. We can't seed UI test data
           # yet because doing so would break unit tests.
+		  puts '5555555555555555555555555555555555555'
           RakeUtils.rake 'db:create db:test:prepare'
         else
+          puts '666666666666666666666666666666666666'
           RakeUtils.rake 'dashboard:setup_db'
         end
+        puts '7777777777777777777777777777777777'
       end
     end
   end
