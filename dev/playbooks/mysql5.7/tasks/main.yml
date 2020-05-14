@@ -1,0 +1,33 @@
+---
+
+
+- name: Install MySQL5.7 server
+  apt:
+    name: mysql-server-5.7
+    state: present
+
+- name: Install MySQL5.7 client
+  apt:
+    name: mysql-server
+    state: present
+
+- name: Stop MySQL5.7 service
+  systemd:
+    name: mysql
+    state: stopped
+
+- name: Start MySQL5.7 service
+  systemd:
+    name: mysql
+    state: started
+
+- name: Enable MySQL5.7 service timer
+  systemd:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: Installing dev-tools for MySQL
+  apt:
+    name: libmysqlclient-dev
+    state: present

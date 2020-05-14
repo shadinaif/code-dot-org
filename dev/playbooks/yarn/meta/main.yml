@@ -1,0 +1,7 @@
+---
+
+dependencies:
+  - role: apt_repo
+    add_apt_key: "https://dl.yarnpkg.com/debian/pubkey.gpg"
+    third_party_repo: "deb https://dl.yarnpkg.com/debian/ stable main"
+    filename: yarn.list

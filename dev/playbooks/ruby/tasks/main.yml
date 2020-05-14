@@ -1,0 +1,8 @@
+---
+
+- name: Installing Ruby
+  include_role:
+    name: rvm.ruby
+  vars:
+    rvm1_rubies: ["ruby-2.5.0"]
+    rvm1_user: "{{ ANSIBLE_REMOTE_USER }}"

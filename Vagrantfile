@@ -12,12 +12,13 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/xenial64"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 3000, host: 3000
+  config.vm.network "private_network", ip: "192.168.44.99"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -28,7 +29,7 @@ Vagrant.configure(2) do |config|
     # vb.gui = true
 
     # Customize the amount of memory on the VM:
-    vb.memory = "2048"
+    vb.memory = "3072"
   end
 
   # View the documentation for the provider you are using for more
@@ -37,11 +38,11 @@ Vagrant.configure(2) do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    aptitude update
-    aptitude upgrade
-    DEBIAN_FRONTEND=noninteractive aptitude install -q -y git mysql-server mysql-client libmysqlclient-dev libxslt1-dev libssl-dev zlib1g-dev imagemagick libmagickcore-dev libmagickwand-dev nodejs npm openjdk-7-jre-headless libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev curl pdftk ruby2.0 ruby2.0-dev
-    ln -sf /usr/bin/ruby2.0 /usr/bin/ruby
-    ln -sf /usr/bin/gem2.0 /usr/bin/gem
-  SHELL
+  # config.vm.provision "shell", inline: <<-SHELL
+  #   aptitude update
+  #   aptitude upgrade
+  #   DEBIAN_FRONTEND=noninteractive aptitude install -q -y git mysql-server mysql-client libmysqlclient-dev libxslt1-dev libssl-dev zlib1g-dev imagemagick libmagickcore-dev libmagickwand-dev nodejs npm openjdk-7-jre-headless libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev curl pdftk ruby2.0 ruby2.0-dev
+  #   ln -sf /usr/bin/ruby2.0 /usr/bin/ruby
+  #   ln -sf /usr/bin/gem2.0 /usr/bin/gem
+  # SHELL
 end

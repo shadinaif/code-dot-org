@@ -1,0 +1,29 @@
+---
+
+- name: Check current timezone
+  shell: cat /etc/timezone
+  register: current_timezone
+
+- name: Set timezone to EEST/UTC
+  copy:
+    content: EEST/UTC
+    dest: /etc/timezone
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  when: current_timezone.stdout != "EEST/UTC"
+  notify:
+    - Update timezone to EEST/UTC
+
+- name: Ensure a locale exists
+  locale_gen:
+    name: en_US.UTF-8
+    state: present
+  notify:
+    - Update locales
+
+- name: Installing pre-requisite packages
+  apt:
+    name: "{{ pre_req_packages }}"
+    state: present

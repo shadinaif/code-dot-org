@@ -1,0 +1,6 @@
+---
+
+- name: Installing NodeJS
+  apt:
+    name: nodejs
+    state: present

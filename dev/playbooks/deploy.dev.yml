@@ -1,0 +1,29 @@
+---
+
+- name: Deploy Code.Org
+  hosts: all
+  remote_user: "{{ ANSIBLE_REMOTE_USER }}"
+  gather_facts: True
+  become: True
+  roles:
+    - pre_requisites
+
+  tasks:
+
+    - name: Installing MySQL 5.7
+      include_role:
+        name: mysql5.7
+
+    - name: Installing NodeJs
+      include_role:
+        name: nodejs
+      vars:
+        node_version: 8
+
+    - name: Intalling Ruby
+      include_role:
+        name: ruby
+
+    - name: Intalling Yarn
+      include_role:
+        name: yarn

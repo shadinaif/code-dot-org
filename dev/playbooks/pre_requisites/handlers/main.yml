@@ -1,0 +1,7 @@
+---
+
+- name: Update timezone to EEST/UTC
+  command: dpkg-reconfigure --frontend noninteractive tzdata
+
+- name: Update locales
+  command: dpkg-reconfigure --frontend noninteractive locales

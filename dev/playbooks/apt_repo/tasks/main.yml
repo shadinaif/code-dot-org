@@ -1,0 +1,40 @@
+---
+
+- name: Adding apt_key
+  apt_key:
+    url: "{{ add_apt_key }}"
+    state: present
+  when: add_apt_key != ""
+
+- name: Add third party apt repository ( {{third_party_repo}} )
+  apt_repository:
+    repo: "{{ third_party_repo }}"
+    state: present
+  when: third_party_repo != "" and filename == ""
+
+- name: Add third party apt repository ( {{third_party_repo}} )
+  apt_repository:
+    repo: "{{ third_party_repo }}"
+    state: present
+    filename: "{{ filename }}"
+  when: third_party_repo != "" and filename != ""
+
+- name: Update apt-get repo and cache
+  apt:
+    update_cache: yes
+    force_apt_get: yes
+    cache_valid_time: 3600
+
+- name: Upgrade all apt packages
+  apt:
+    upgrade: dist
+    force_apt_get: yes
+  when: with_upgrade
+
+- name: Remove useless packages from the cache
+  apt:
+    autoclean: yes
+
+- name: Remove dependencies that are no longer required
+  apt:
+    autoremove: yes

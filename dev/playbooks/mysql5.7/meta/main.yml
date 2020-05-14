@@ -1,0 +1,5 @@
+---
+
+dependencies:
+  - role: apt_repo
+    third_party_repo: "deb http://cn.archive.ubuntu.com/ubuntu/ xenial main restricted universe multiverse"

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 source /root/.bashrc
+source $NVM_DIR/nvm.sh
 
 service mysql stop
 service mysql start
-sleep 5
 
 gem install tzinfo-data
 gem install bundler -v 1.17.1
@@ -24,7 +24,7 @@ bundle exec rake install:hooks
 
 echo "-------------------------------04------------------------------------"
 bundle exec rake install
-
-echo "-------------------------------05------------------------------------"
-bundle exec rake build
-echo "-------------------------------06------------------------------------"
+#
+#echo "-------------------------------05------------------------------------"
+#bundle exec rake build
+#echo "-------------------------------06------------------------------------"
